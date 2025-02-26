@@ -5,6 +5,7 @@
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libswscale/swscale.h>
+#include <libavutil/imgutils.h>
 
 
 struct MediaPlayerCodec
@@ -19,4 +20,7 @@ struct MediaPlayerCodec
 struct MediaPlayerFrame
 {
 	AVFrame* frame = NULL;
+	AVFrame* frameRGB = NULL;
+	uint8_t* buffer = NULL;
+	int numBytes;
 };

@@ -54,7 +54,20 @@ int main(int argc, char** argv)
 	}
 
 	frame.frame = av_frame_alloc();
+	frame.frameRGB = av_frame_alloc();
 
+	frame.numBytes = av_image_get_buffer_size(AV_PIX_FMT_RGB24, codec.codecContext->width, codec.codecContext->height, 1);
+	frame.buffer = (uint8_t*)av_malloc(sizeof(uint8_t) * frame.numBytes);
+
+	if (!frame.buffer)
+	{
+		fprintf(stderr, "Could not allocate buffer\n");
+		return -1;
+	}
+
+	av_image_fill_arrays(frame.frameRGB->data, frame.frameRGB->linesize, 
+						 frame.buffer, AV_PIX_FMT_RGB24, codec.codecContext->width,
+						 codec.codecContext->height, 1);
 
 	av_dump_format(codec.formatContext, 0, argv[1], 0);
 	return 0;
